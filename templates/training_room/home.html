@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+?
+{% endblock title %}
+
+{% block content %}
+<div class="row justify-content-md-center py-4 gy-4">
+
+
+    <form action="{% url 'training_sentences' %}" method="post">
+        {% csrf_token %}
+
+
+        <h2 class="d-grid" id="headingOne">
+
+            <p class="text-center">Привет, </p>
+
+            <button name="user" value="{{ user.pk }}" class="btn btn-primary" type="submit">
+                Начать тренировку
+            </button>
+        </h2>
+
+    </form>
+
+        <form action="" method="post">
+        {% csrf_token %}
+
+
+        <h2 class="d-grid" id="headingOne">
+
+            <button name="user" value="" class="btn btn-primary" type="submit">
+                Начать тренировку слов
+            </button>
+        </h2>
+
+    </form>
+
+    <p>The future belongs to those, who believe in beauty of their dreams.</p>
+    <p>Будущее принадлежит тем, кто верит в свои мечты.</p>
+
+
+
+
+
+
+</div>
+{% endblock content %}
