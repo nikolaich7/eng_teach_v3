@@ -10,37 +10,42 @@
 
     <h2 class="col-auto">{{ next_task.task.translation }}</h2>
 
-
+    {% if type_training == 'Sentences' %}
     <form action="{% url 'training_sentences' %}" method="post">
-        {% csrf_token %}
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Ответ" autofocus autocomplete="off"
-                   name="{{ next_task.task.pk }}">
-            <button class="btn btn-outline-secondary" type="submit" id="button-addon2"
-                    name="user" value="{{ user.pk }}">Проверить
-            </button>
 
-    </form>
+        {% elif type_training == 'Words' %}
+        <form action="{% url 'training_words' %}" method="post">
+            {% endif %}
+
+            {% csrf_token %}
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Ответ" autofocus autocomplete="off"
+                       name="{{ next_task.task.pk }}">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2"
+                        name="user" value="{{ user.pk }}">Проверить
+                </button>
+
+        </form>
 </div>
 
 
 <h3 class="text-success col-auto
         {% if correct_last_answer == True %}col-auto border border-dark rounded-circle {% endif %}
 ">
-    {{ date_history.right_answers }}
+    {{ right_answers }}
 </h3>
 <h3 class="col-auto text-primary">/</h3>
 <h3 class="text-danger col-auto
 {% if correct_last_answer == False %}col-auto border border-dark rounded-circle {% endif %}
-">{{ date_history.wrong_answers }}
+">{{ wrong_answers }}
 </h3>
 
 {% if not correct_last_answer == None %}
 <div class="row">
     <div class="col-6">
-    <p>В прошлый раз был вопрос:</p>
-    <p>Вы ответили:</p>
-    <p>Правильный ответ был:</p>
+        <p>В прошлый раз был вопрос:</p>
+        <p>Вы ответили:</p>
+        <p>Правильный ответ был:</p>
     </div>
     <div class="col-6">
         <p>{{ last_task.translation }}</p>

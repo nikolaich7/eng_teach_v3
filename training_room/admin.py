@@ -12,9 +12,9 @@ class TasksAdmin(admin.ModelAdmin):
 
 @admin.register(DateHistory)
 class HistoryAdmin(admin.ModelAdmin):
-    list_display = ['user', 'date', 'right_answers', 'wrong_answers']
+    list_display = ['user', 'date']
     list_display_links = ['user', 'date']
-    list_filter = ['user', 'date', 'right_answers', 'wrong_answers']
+    list_filter = ['user', 'date']
     save_on_top = True
 
 
@@ -29,4 +29,7 @@ class TaskHistoryAdmin(admin.ModelAdmin):
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ['user', 'next_task']
+
+
+admin.site.register(Category)
 

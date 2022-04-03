@@ -15,13 +15,18 @@ def home(request):
 
 
 def training_sentences(request):
-    context = training(request.POST, Tasks.objects.all())
+    context = training(request.POST, 'Sentences')
     return render(request, 'training_sentences.html', context)
 
 
-def training(form_data, tasks):
+def training_words(request):
+    context = training(request.POST, 'Words')
+    return render(request, 'training_sentences.html', context)
+
+
+def training(form_data, type_training):
     user = User.objects.get(pk=form_data['user'])
-    task_history = TaskHistory.objects.filter(user=user)
+    task_history = TaskHistory.objects.filter(user=user, task__category__name=type_training)
     date_history = DateHistory.objects.get_or_create(user=user, date=date.today())
     profile = user.profile
     last_task_pk = profile.next_task
@@ -32,11 +37,17 @@ def training(form_data, tasks):
         if last_answer.lower() == last_task.text.strip().lower():
             correct_last_answer = True
             history_last_task.right_answers += 1
-            date_history[0].right_answers += 1
+            if type_training == 'Sentences':
+                date_history[0].right_answers_sentences += 1
+            elif type_training == 'Words':
+                date_history[0].right_answers_words += 1
         else:
             correct_last_answer = False
             history_last_task.wrong_answers += 1
-            date_history[0].wrong_answers += 1
+            if type_training == 'Sentences':
+                date_history[0].wrong_answers_sentences += 1
+            elif type_training == 'Words':
+                date_history[0].wrong_answers_words += 1
         history_last_task.save()
         date_history[0].save()
         profile.last_answer = last_answer
@@ -44,39 +55,22 @@ def training(form_data, tasks):
     else:
         correct_last_answer = None
     next_task = task_history.exclude(
-        date_last__gt = task_history[30].date_last
-    ).first()
+        date_last__gt = task_history[100].date_last
+    ).order_by('right_answers').first()
     profile.next_task = next_task.task.pk
     profile.save()
+    if type_training == 'Sentences':
+        right_answers = date_history[0].right_answers_sentences
+        wrong_answers = date_history[0].wrong_answers_sentences
+    elif type_training == 'Words':
+        right_answers = date_history[0].right_answers_words
+        wrong_answers = date_history[0].wrong_answers_words
     context = {
         'next_task': next_task,
         'last_task': last_task,
-        'date_history': date_history[0],
+        'right_answers': right_answers,
+        'wrong_answers': wrong_answers,
         'correct_last_answer': correct_last_answer,
+        'type_training': type_training,
     }
     return context
-
-
-def read(request):
-    user = User.objects.get(pk=1)
-    value = ''
-    i = 0
-    dict_ex = {}
-    with open("1.txt", "r") as file1:
-        for line in file1:
-            if not line.strip():
-                print('Пустпя строка')
-                break
-            if i%2 == 0:
-                value = line
-            else:
-                dict_ex[line.strip()] = value.strip()
-            i += 1
-            print(i)
-    for en, ru in dict_ex.items():
-        e = Tasks(text=en, translation=ru)
-        e.save()
-        f = TaskHistory(user=user, task=e)
-        f.save()
-        print(en)
-    return HttpResponse('done')
