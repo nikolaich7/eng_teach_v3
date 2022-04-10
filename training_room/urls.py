@@ -3,7 +3,9 @@ from .views import *
 
 urlpatterns = [
     path('', home, name='home'),
-    path('read', graph, name='home'),
-    path('training_words', training_words, name='training_words'),
-    path('training_sentences', training_sentences, name='training_sentences'),
+    path('test', add_audio),
+    path('training_words_text', training_words_text, name='training_words_text'),
+    path('training_words_audio', training_words_audio, name='training_words_audio'),
+    path('training_sentences_text', training_sentences_text, name='training_sentences_text'),
+    path('training_sentences_audio', training_sentences_audio, name='training_sentences_audio'),
 ]

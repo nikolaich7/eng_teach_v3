@@ -20,9 +20,9 @@ class HistoryAdmin(admin.ModelAdmin):
 
 @admin.register(TaskHistory)
 class TaskHistoryAdmin(admin.ModelAdmin):
-    list_display = ['user', 'task', 'date_start', 'date_last', 'right_answers', 'wrong_answers']
+    list_display = ['user', 'task', 'date_start', 'date_last', 'right_answers_text', 'wrong_answers_text']
     list_display_links = ['user']
-    list_filter = ['user', 'date_start', 'date_last', 'right_answers', 'wrong_answers']
+    list_filter = ['user', 'date_start', 'date_last']
     save_on_top = True
 
 

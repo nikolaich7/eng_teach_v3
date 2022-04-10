@@ -8,37 +8,45 @@
 <div class="row justify-content-md-center py-4 gy-4">
 
 
-    <form action="{% url 'training_sentences' %}" method="post">
+    <form action="{% url 'training_sentences_text' %}" method="post">
         {% csrf_token %}
-
-
         <h2 class="d-grid" id="headingOne">
-
-            <p class="text-center">Привет, </p>
-
+            <p class="text-center">Привет, {{ user.username }}</p>
             <button name="user" value="{{ user.pk }}" class="btn btn-primary" type="submit">
                 Начать тренировку
             </button>
         </h2>
-
     </form>
 
-    <form action="{% url 'training_words' %}" method="post">
+
+    <form action="{% url 'training_words_text' %}" method="post">
         {% csrf_token %}
-
-
         <h2 class="d-grid" id="headingOne">
-
             <button name="user" value="{{ user.pk }}" class="btn btn-primary" type="submit">
                 Начать тренировку слов
             </button>
         </h2>
-
     </form>
 
-    <p>The future belongs to those, who believe in beauty of their dreams.</p>
-    <p>Будущее принадлежит тем, кто верит в свои мечты.</p>
+
+    <form action="{% url 'training_sentences_audio' %}" method="post">
+        {% csrf_token %}
+        <h2 class="d-grid" id="headingOne">
+            <button name="user" value="{{ user.pk }}" class="btn btn-primary" type="submit">
+                Начать аудио тренировку
+            </button>
+        </h2>
+    </form>
 
 
+    <form action="{% url 'training_words_audio' %}" method="post">
+        {% csrf_token %}
+        <h2 class="d-grid" id="headingOne">
+            <button name="user" value="{{ user.pk }}" class="btn btn-primary" type="submit">
+                Начать аудио тренировку слов
+            </button>
+        </h2>
+    </form>
+    <img src="media/1.png" alt="">
 </div>
 {% endblock content %}

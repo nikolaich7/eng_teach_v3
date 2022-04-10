@@ -17,6 +17,7 @@ class Category(models.Model):
 class Tasks(models.Model):
     text = models.TextField(unique=True, max_length=200, verbose_name='текст на английском')
     translation = models.TextField(max_length=200, verbose_name='перевод')
+    audio = models.FileField(upload_to='audio/%Y/%m/%d', null = True, blank=True)
     category = models.ManyToManyField(Category, verbose_name='категории')
 
     def __str__(self):
@@ -31,10 +32,15 @@ class Tasks(models.Model):
 class DateHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь')
     date = models.DateField(verbose_name='дата')
-    right_answers_sentences = models.PositiveSmallIntegerField(default=0, verbose_name='ras')
-    wrong_answers_sentences = models.PositiveSmallIntegerField(default=0, verbose_name='was')
-    right_answers_words = models.PositiveSmallIntegerField(default=0, verbose_name='raw')
-    wrong_answers_words = models.PositiveSmallIntegerField(default=0, verbose_name='waw')
+    right_answers_sentences_text = models.PositiveSmallIntegerField(default=0, verbose_name='rast')
+    wrong_answers_sentences_text = models.PositiveSmallIntegerField(default=0, verbose_name='wast')
+    right_answers_words_text = models.PositiveSmallIntegerField(default=0, verbose_name='rawt')
+    wrong_answers_words_text = models.PositiveSmallIntegerField(default=0, verbose_name='wawt')
+    right_answers_sentences_audio = models.PositiveSmallIntegerField(default=0, verbose_name='rasa')
+    wrong_answers_sentences_audio = models.PositiveSmallIntegerField(default=0, verbose_name='wasa')
+    right_answers_words_audio = models.PositiveSmallIntegerField(default=0, verbose_name='rawa')
+    wrong_answers_words_audio = models.PositiveSmallIntegerField(default=0, verbose_name='wawa')
+
 
     def __str__(self):
         return 'история занятий ' + self.user.username
@@ -49,8 +55,10 @@ class DateHistory(models.Model):
 class TaskHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь')
     task = models.ForeignKey(Tasks, on_delete=models.CASCADE, verbose_name='Задание')
-    right_answers = models.PositiveSmallIntegerField(default=0, verbose_name='правильных ответов')
-    wrong_answers = models.PositiveSmallIntegerField(default=0, verbose_name='неправильных ответов')
+    right_answers_text = models.PositiveSmallIntegerField(default=0, verbose_name='rat')
+    wrong_answers_text = models.PositiveSmallIntegerField(default=0, verbose_name='wat')
+    right_answers_audio = models.PositiveSmallIntegerField(default=0, verbose_name='raa')
+    wrong_answers_audio = models.PositiveSmallIntegerField(default=0, verbose_name='waa')
     date_start = models.DateField(auto_now_add=True, verbose_name='изучается с ')
     date_last = models.DateTimeField(auto_now=True, verbose_name='последнее изучение')
 
@@ -61,7 +69,7 @@ class TaskHistory(models.Model):
         unique_together = ('user', 'task')
         verbose_name = 'история заданий пользователя'
         verbose_name_plural = 'истории заданий пользователей'
-        ordering = ['date_last', '-date_start', 'right_answers', '-wrong_answers']
+        ordering = ['-date_last']
 
 
 class Profile(models.Model):

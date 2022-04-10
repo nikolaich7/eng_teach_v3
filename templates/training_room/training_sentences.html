@@ -8,24 +8,38 @@
 <div class="row justify-content-md-center py-4 gy-4 bg-light">
 
 
+    {% if type_training == 'text' %}
     <h2 class="col-auto">{{ next_task.task.translation }}</h2>
+    {% elif type_training == 'audio' %}
+    <audio src="media/{{ next_task.task.audio }}" controls></audio>
+    {% endif %}
 
-    {% if type_training == 'Sentences' %}
-    <form action="{% url 'training_sentences' %}" method="post">
 
-        {% elif type_training == 'Words' %}
-        <form action="{% url 'training_words' %}" method="post">
+    {% if type_training == 'text' %}
+    {% if tasks_training == 'Sentences' %}
+    <form action="{% url 'training_sentences_text' %}" method="post">
+        {% elif tasks_training == 'Words' %}
+        <form action="{% url 'training_words_text' %}" method="post">
+            {% endif %}
             {% endif %}
 
-            {% csrf_token %}
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Ответ" autofocus autocomplete="off"
-                       name="{{ next_task.task.pk }}">
-                <button class="btn btn-outline-secondary" type="submit" id="button-addon2"
-                        name="user" value="{{ user.pk }}">Проверить
-                </button>
+            {% if type_training == 'audio' %}
+            {% if tasks_training == 'Sentences' %}
+            <form action="{% url 'training_sentences_audio' %}" method="post">
+                {% elif tasks_training == 'Words' %}
+                <form action="{% url 'training_words_audio' %}" method="post">
+                    {% endif %}
+                    {% endif %}
 
-        </form>
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Ответ" autofocus autocomplete="off"
+                               name="{{ next_task.task.pk }}">
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2"
+                                name="user" value="{{ user.pk }}">Проверить
+                        </button>
+
+                </form>
 </div>
 
 
